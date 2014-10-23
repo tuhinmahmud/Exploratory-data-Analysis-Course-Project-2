@@ -1,5 +1,6 @@
-library(lattice)
-library(plyr)
+#Q4: Across the United States, how have emissions from coal 
+#      combustion-related sources changed from 1999-2008?
+library(dplyr)
 NEI <- readRDS("summarySCC_PM25.rds")
 SCC <- readRDS("Source_Classification_Code.rds")
 
@@ -10,10 +11,16 @@ SCC.identifiers <- as.character(SCC.coal$SCC)
 NEI$SCC <- as.character(NEI$SCC)
 NEI.coal <- NEI[NEI$SCC %in% SCC.identifiers, ]
 
-aggregate.coal <- with(NEI.coal, aggregate(Emissions, by = list(year), sum))
-colnames(aggregate.coal) <- c("year", "Emissions")
+adataCoal<-
+    NEI.coal %>%
+    group_by(year) %>%
+    summarize(Emissions=sum(Emissions)) 
 
-plot(aggregate.coal, type = "o", ylab = expression("Total Emissions, PM"[2.5]), 
+png("plot4.png")
+plot(adataCoal, type = "o", ylab = expression("Total Emissions, PM"[2.5]), 
     xlab = "Year", main = "Emissions and Total Coal Combustion for the United States", 
         xlim = c(1999, 2008))
-	polygon(aggregate.coal, col = "red", border = "red")
+#plot the regression line showing the decrease in the total emission over years
+lmline <- lm(Emissions~year,data=adataCoal)
+abline(lmline,col="red")
+dev.off()
