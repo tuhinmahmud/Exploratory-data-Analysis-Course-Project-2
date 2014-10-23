@@ -14,4 +14,6 @@ plot(adata, type = "o", ylab = expression("Total Emissions, PM"[2.5]),
 #plot the regression line showing the decrease in the total emission over years
 lmline <- lm(total.emission~year,data=adata)
 abline(lmline,col="red")
+legend('topright', c("Total Emission" ,"Fitting linear model(lm)"), 
+       lty=1, col=c('black', 'red'), bty='n', cex=.75)
 dev.off()

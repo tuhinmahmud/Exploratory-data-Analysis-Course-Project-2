@@ -20,7 +20,11 @@ png("plot4.png")
 plot(adataCoal, type = "o", ylab = expression("Total Emissions, PM"[2.5]), 
     xlab = "Year", main = "Emissions and Total Coal Combustion for the United States", 
         xlim = c(1999, 2008))
+
+
 #plot the regression line showing the decrease in the total emission over years
 lmline <- lm(Emissions~year,data=adataCoal)
 abline(lmline,col="red")
+legend('topright', c("Total Emission" ,"Fitting linear model(lm)"), 
+       lty=1, col=c('black', 'red'), bty='n', cex=.75)
 dev.off()
